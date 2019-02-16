@@ -1,0 +1,24 @@
+<ActionBar class="action-bar">
+    <Label class="action-bar-title" text="Log In"></Label>
+</ActionBar>
+
+<GridLayout collums = "50, auto, *" rows ="50,auto,*" class="page">
+    <textField #email hint = "Email" autocorrect = "false" class="input input-border" 
+    text = '' row = "0" col="0"> 
+        <!-- email field. #email name of the field, kinda like an id-->
+    </textField>
+    <textField #password hint = "Password" secure = "true" autocorrect = "false" 
+    class="input input-border" row = "1" col="0"> <!-- password field. #password 
+        name of the field, kinda like an id-->
+    </textField>
+
+    <!-- tap functions, I can access other elements by referencing the '#'-->
+    <button text = "Login"  
+    (tap)="submit(email.text, password.text)" row = "3" col="0"></button> 
+    <button text = "Logout"  (tap)="logout()" row = "3" 
+    col="1"></button>
+    <button text = "SignUp"  (tap)="submitSignUp()" 
+    row = "3" col="2"></button>
+
+   
+</GridLayout>

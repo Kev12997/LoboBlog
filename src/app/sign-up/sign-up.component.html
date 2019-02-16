@@ -1,0 +1,16 @@
+<ActionBar class="action-bar">
+    <Label class="action-bar-title" text="Sign Up"></Label>
+</ActionBar>
+
+<StackLayout class="page">
+    <textField #email hint = "Email" autocorrect = "false" class="input input-border" text = ''>
+    </textField>
+    <textField #password hint = "Password" secure = "true" autocorrect = "false" class="input input-border">
+    </textField>
+
+    <button text = "SignUp" horizontalAlignment="center" (tap)="submit(email.text, password.text)"></button>
+    <button text = "LogIn" horizontalAlignment="center" (tap)="submitLogin()"></button>
+    
+
+   
+</StackLayout>
