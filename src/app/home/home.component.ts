@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import {Page} from 'tns-core-modules/ui/page'; //
+
 import { TextField } from "tns-core-modules/ui/text-field";
 import {Router} from "@angular/router";// includes router navigation
 import { routerNgProbeToken } from "@angular/router/src/router_module";
@@ -10,11 +12,12 @@ const firebase = require("nativescript-plugin-firebase"); //includes firebase pl
 @Component({
     selector: "Home",
     moduleId: module.id,
-    templateUrl: "./home.component.html"
+    templateUrl: "./home.component.html",
+    styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private page: Page) {
         // Use the component constructor to inject providers.
         
     }
@@ -22,6 +25,7 @@ export class HomeComponent implements OnInit {
     ngOnInit(): void {
         
         // Init your component properties here.
+        this.page.backgroundColor = '#ffffa3';
         
     }
 
@@ -40,13 +44,10 @@ export class HomeComponent implements OnInit {
             }
           }).then(
             (user) => {
-              this.router.navigate(['homepage']);
+              this.router.navigate(['homepage']); //after the function starts navigates to the homepage
             } 
           )
-          
-            
-        //after the function starts navigates to the homepage NOTE: THIS ALWAYS RUNS! NEEDS TO BE FIXED
-          .catch(error => console.log(error)); // Passes error to console
+          .catch(error => alert(error)); // Passes error to console
 
           
 
@@ -55,9 +56,7 @@ export class HomeComponent implements OnInit {
               
     }
 
-    public logout(){
-      firebase.logout();//Logouts user from whatever methos hes logged in, gives console error cause facebook is not initialized
-    }
+    
 
     public submitSignUp(){
       this.router.navigate(['signUp']); // navigates to sign up page

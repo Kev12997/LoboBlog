@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {Page} from 'tns-core-modules/ui/page';
 import { BindingOptions } from "tns-core-modules/ui/core/bindable";
 import {Router} from "@angular/router";
-
 const firebase = require("nativescript-plugin-firebase");
 
 
@@ -20,7 +20,9 @@ export class HomepageComponent implements OnInit {
 
   
 
-  constructor() { 
+  constructor(private router: Router, private page: Page) {
+
+    
     
   }
 
@@ -32,6 +34,17 @@ export class HomepageComponent implements OnInit {
 
     
   }
+
+
+  public onTap(){
+    firebase.logout();//Logouts user from whatever methos hes logged in, gives console error cause facebook is not initialized
+    this.router.navigate(['home']);
+    alert("Logged out from account");
+  }
+
+  
+
+  
 
 
   

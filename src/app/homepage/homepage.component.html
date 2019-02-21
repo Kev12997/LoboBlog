@@ -1,6 +1,13 @@
 <ActionBar class="action-bar">
-    <TextField [(ngModel)]="username" ></TextField> <!-- ngModel = dyanamic 2 way databinding, I can access
-    username in the typescrit-->
+     
+    
 </ActionBar>
 
 
+<ActionBar title="Action Items">
+    <ActionItem (tap)="onTap()">
+        <button text= "Logout" > </button>
+    </ActionItem>
+    
+</ActionBar>
+  

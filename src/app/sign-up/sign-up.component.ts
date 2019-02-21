@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Page} from 'tns-core-modules/ui/page';
+
 import {Router} from "@angular/router";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 
@@ -12,9 +14,12 @@ const firebase = require("nativescript-plugin-firebase"); //needed to use fireba
 })
 export class SignUpComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private page: Page) { 
+
+  }
 
   ngOnInit() {
+    this.page.backgroundColor = '#ffffa3';
   }
 
   public submitLogin(){

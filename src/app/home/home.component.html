@@ -13,10 +13,10 @@
     </textField>
     <StackLayout orientation="horizontal" horizontalAlignment="center" row = "3" col = "0">
         <!-- tap functions, I can access other elements by referencing the '#'-->
-        <button text = "Login"  
+        <button text = "Login" class="submit-button" 
         (tap)="submit(email.text, password.text)" ></button> 
-        <button text = "Logout"  (tap)="logout()" ></button>
-        <button text = "SignUp"  (tap)="submitSignUp()" ></button>
+        
+        <button text = "SignUp" class="submit-button"  (tap)="submitSignUp()" ></button>
     </StackLayout>
 
    
