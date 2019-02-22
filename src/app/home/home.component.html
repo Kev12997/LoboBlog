@@ -1,23 +1,25 @@
-<ActionBar class="action-bar">
-    <Label class="action-bar-title" text="Log In"></Label>
-</ActionBar>
+<Page class ="page">
+    <ActionBar class="action-bar">
+        <Label class="action-bar-title" text="Log In"></Label>
+    </ActionBar>
 
-<GridLayout columns="*, auto, auto" rows="auto, auto, auto"  verticalAlignment="center"   class="page">
-    <textField #email hint = "Email" autocorrect = "false" class="input input-border" 
-    text = '' row = "0" col="0"> 
-        <!-- email field. #email name of the field, kinda like an id-->
-    </textField>
-    <textField #password hint = "Password" secure = "true" autocorrect = "false" 
-    class="input input-border" row = "1" col="0"> <!-- password field. #password 
-        name of the field, kinda like an id-->
-    </textField>
-    <StackLayout orientation="horizontal" horizontalAlignment="center" row = "3" col = "0">
-        <!-- tap functions, I can access other elements by referencing the '#'-->
-        <button text = "Login" class="submit-button" 
-        (tap)="submit(email.text, password.text)" ></button> 
-        
-        <button text = "SignUp" class="submit-button"  (tap)="submitSignUp()" ></button>
-    </StackLayout>
+    <GridLayout columns="*, auto, auto" rows="auto, auto, auto"  verticalAlignment="center"   class="page">
+        <textField #email hint = "Email" autocorrect = "false" class="input input-border" 
+        text = '' row = "0" col="0"> 
+            <!-- email field. #email name of the field, kinda like an id-->
+        </textField>
+        <textField #password hint = "Password" secure = "true" autocorrect = "false" 
+        class="input input-border" row = "1" col="0"> <!-- password field. #password 
+            name of the field, kinda like an id-->
+        </textField>
+        <StackLayout orientation="horizontal" horizontalAlignment="center" row = "3" col = "0">
+            <!-- tap functions, I can access other elements by referencing the '#'-->
+            <button text = "Login" class="btn btn-primary btn-rounded-lg" 
+            (tap)="submit(email.text, password.text)" ></button> 
+            
+            <button text = "SignUp" class="btn btn-primary btn-rounded-lg"  (tap)="submitSignUp()" ></button>
+        </StackLayout>
 
-   
-</GridLayout>
+    
+    </GridLayout>
+</Page>

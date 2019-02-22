@@ -27,10 +27,10 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit() {
-    firebase.getCurrentUser() // my idea here was to get the current user thats logged in and put the email in the action bar, giving problems
+     // my idea here was to get the current user thats logged in and put the email in the action bar, giving problems
                               // hence why I declared username as Test at the top
-    .then(user => alert("User Email: " + user.email))
-    .catch(error => console.log("Trouble in paradise: " + error)) //logged in error message
+    
+     
 
     
   }

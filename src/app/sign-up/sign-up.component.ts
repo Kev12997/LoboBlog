@@ -19,7 +19,7 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.page.backgroundColor = '#ffffa3';
+    //this.page.backgroundColor = '#ffffa3';
   }
 
   public submitLogin(){
@@ -30,20 +30,21 @@ export class SignUpComponent implements OnInit {
     firebase.createUser({
       email: email,
       password: password
-    }).then(this.router.navigate(['homepage'])).then( 
+    }).then( 
       
-        function (user) { //succes dialog
+         (user) => { //succes dialog
          
           dialogs.alert({ //Dialogs: imported function, displays pop up dialog
             title: "User created", // title of the dialog
-            message: "email: " + user.email, // dialog content
+            message: "email: " + user.email + "\nYou are now logged in!", // dialog content
             okButtonText: "Nice!" //Text of dialog button
           })
+          this.router.navigate(['homepage']);
           
 
           
         },
-        function (errorMessage) { // error dialog
+         (errorMessage) => { // error dialog
           dialogs.alert({
             title: "No user created",
             message: errorMessage,
