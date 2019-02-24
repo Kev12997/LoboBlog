@@ -1,1 +1,18 @@
-<page-router-outlet></page-router-outlet>
+<RadSideDrawer tkExampleTitle tkToggleNavButton>
+    <StackLayout tkDrawerContent class="sideStackLayout">
+        <StackLayout class="sideTitleStackLayout">
+            <Label text="Welcome, {{ username }} "></Label>
+        </StackLayout>
+        <ScrollView>
+            <StackLayout class="sideStackLayout">
+                <label text= "Logout" (tap)="logOut()" class="sideLightGrayLabel"> </label>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+    
+
+    <page-router-outlet tkMainContent></page-router-outlet> 
+    
+
+    
+</RadSideDrawer>

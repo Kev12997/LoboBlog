@@ -1,8 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {Page} from 'tns-core-modules/ui/page';
 import { BindingOptions } from "tns-core-modules/ui/core/bindable";
 import {Router} from "@angular/router";
 const firebase = require("nativescript-plugin-firebase");
+
+import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
+import { getRootView } from "tns-core-modules/application";
+import * as appSettings from "tns-core-modules/application-settings";
+import { DataService } from "../app.service";
+
 
 
 
@@ -15,8 +21,10 @@ const firebase = require("nativescript-plugin-firebase");
   moduleId: module.id,
 })
 export class HomepageComponent implements OnInit {
+  username:string;
+  
+  public drawer: RadSideDrawer;
 
-  username: String = "Test" // username is from the html 2 way binding, here im setting it to a string 
 
   
 
@@ -27,6 +35,11 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit() {
+    setTimeout(() => {
+        this.drawer = <RadSideDrawer>getRootView();
+        this.drawer.gesturesEnabled = true; 
+    }, 100);
+    //firebase.getCurrentUser().then(user => this.username = user.email);
      // my idea here was to get the current user thats logged in and put the email in the action bar, giving problems
                               // hence why I declared username as Test at the top
     
@@ -36,11 +49,10 @@ export class HomepageComponent implements OnInit {
   }
 
 
-  public onTap(){
-    firebase.logout();//Logouts user from whatever methos hes logged in, gives console error cause facebook is not initialized
-    this.router.navigate(['home']);
-    alert("Logged out from account");
-  }
+
+  public openDrawer(){
+    this.drawer.showDrawer();
+}
 
   
 
