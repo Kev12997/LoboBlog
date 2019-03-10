@@ -10,6 +10,7 @@ import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { getRootView } from "tns-core-modules/application";
 import * as appSettings from "tns-core-modules/application-settings";
 import { DataService } from "../app.service";
+import { Image } from "tns-core-modules/ui/image";
 
 // and later during the page initialization
 
@@ -47,28 +48,24 @@ export class HomeComponent implements OnInit {
 
     
 
-    public submit(textEmail, textPassword){
+    public submit(){
      
         //this.router.navigate(['/homepage']);
         firebase.login( // logs in user
           {
             
-            type: firebase.LoginType.PASSWORD, //the type of login by the plugin
-            passwordOptions: {
-              email: textEmail, //textEmail and textPassword come from the html component
-              password: textPassword
-              
+            type: firebase.LoginType.GOOGLE, //the type of login by the plugin
+            googleOptions: {
+              hostedDomain: "upr.edu"
             }
           }).then(
             (user) => {
               var letter;
               this.router.navigate(['homepage']); //after the function starts navigates to the homepage
-              letter = this.capitalLetter(user.email)
-              letter = letter.substring(0,letter.indexOf("."));
-              this.data.changeUsername(letter)
+              this.data.changeUsername(user.name)
             } 
           )
-          .catch(error => alert(error)); // Passes error to console
+          .catch(error => alert(error)); // Passes error to console 
 
           
 
@@ -79,13 +76,9 @@ export class HomeComponent implements OnInit {
 
     
 
-    public submitSignUp(){
-      this.router.navigate(['signUp']); // navigates to sign up page
-          
-    }
-
-    public capitalLetter(string) 
-    {
-        return string.charAt(0).toUpperCase() + string.slice(1);  //Function to turn a string to capital first letter
+    
+    public menu(){
+      this.router.navigate(['homepage']); // navigates to sign up page
+       
     }
 }

@@ -10,10 +10,14 @@
 // create a file named before-plugins.gradle in the current directory and place it there
 
 android {  
-  defaultConfig {  
+  defaultConfig {
+    multiDexEnabled true  
     generatedDensities = []
   }  
   aaptOptions {  
     additionalParameters "--no-version-vectors"  
+  }
+  dexOptions {
+    javaMaxHeapSize "4g"
   }  
 } 

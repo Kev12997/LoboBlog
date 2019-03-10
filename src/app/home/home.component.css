@@ -11,4 +11,19 @@ GridLayout{
     
 }
 
+.image{
+    background-image: url('res://lobo');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
 
+.google {
+    border-radius: 5;
+    border-width: 1;
+    color: white;
+    margin: 10;
+    font-size: 22;
+    border-color: #2196F3;
+    background-color: #2196F3;
+}
