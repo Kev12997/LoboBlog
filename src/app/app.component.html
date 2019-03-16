@@ -5,7 +5,22 @@
         </StackLayout>
         <ScrollView>
             <StackLayout class="sideStackLayout">
-                <label text= "Logout" (tap)="logOut()" class="sideLightGrayLabel"> </label>
+                <label text= "Main Menu" (tap)="menu()" class="sideLabel"> </label>
+                <label text= "CCOM" (tap)="category('CCOM')" class="sideLabel"> </label>
+                <label text= "COMU" (tap)="category('COMU')" class="sideLabel"> </label>
+                <label text= "ADEM" (tap)="category('ADEM')" class="sideLabel"> </label>
+                <label text= "BIOL" (tap)="category('BIOL')" class="sideLabel"> </label>
+                <label text= "SIFI" (tap)="category('SIFI')" class="sideLabel"> </label>
+                <label text= "ESPA" (tap)="category('ESPA')" class="sideLabel"> </label>
+                <label text= "ENGL" (tap)="category('ENGL')" class="sideLabel"> </label>
+                <label text= "CISO" (tap)="category('CISO')" class="sideLabel"> </label>
+                <label text= "HUMA" (tap)="category('HUMA')" class="sideLabel"> </label>
+                <label text= "FISI" (tap)="category('FISI')" class="sideLabel"> </label>
+                <label text= "ENFER" (tap)="category('ENFER')" class="sideLabel"> </label>
+                <StackLayout class="hr-light m-10"></StackLayout>
+                <label text= "Write Post" (tap)="writePost()" class="sideLabel"> </label>
+                <label text= "Logout" (tap)="logOut()" class="sideLabel"> </label>
+               
             </StackLayout>
         </ScrollView>
     </StackLayout>

@@ -1,8 +1,10 @@
 import { Component,ViewChild, OnInit, AfterViewInit, ChangeDetectorRef, Input, Output } from "@angular/core";
-import {Router} from "@angular/router";// includes router navigation
+import {Router, RouterModule} from "@angular/router";// includes router navigation
 import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { DataService } from "./app.service";
+
+import { Location } from "@angular/common";
 
 const firebase = require("nativescript-plugin-firebase"); //includes firebase plugin
 
@@ -17,8 +19,9 @@ export class AppComponent implements AfterViewInit, OnInit {
     username:string;
 
     
-    constructor(private _changeDetectionRef: ChangeDetectorRef, private router: Router, private data: DataService){
+    constructor(location: Location, private _changeDetectionRef: ChangeDetectorRef, private router: Router, private data: DataService, ){
         //var username;
+       
        
     }
 
@@ -54,6 +57,29 @@ export class AppComponent implements AfterViewInit, OnInit {
         this.drawer.closeDrawer();
         alert("Logged out from account");
       }
+
+    public category(category){
+        this.router.routeReuseStrategy.shouldReuseRoute = function(){ //Allows router reuse, works with a new setting in router module
+            return false;
+         }
+        
+        this.data.category = category;
+        this.router.navigate(['category-page']);
+        this.drawer.closeDrawer();
+        
+        
+    }
+
+    public menu(){
+        this.router.navigate(['homepage']);
+        this.drawer.closeDrawer();
+    }
+
+    public writePost(){
+        this.router.navigate(['writePost']);
+        this.drawer.closeDrawer();
+
+    }
 
       
     

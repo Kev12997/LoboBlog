@@ -10,11 +10,15 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 
 
+
 import {NativeScriptRouterModule} from "nativescript-angular/router";
 
 import { DataService } from "./app.service";
+import { CategoryComponent } from './category/category.component';
+import { WritePostComponent } from './write-post/write-post.component';
 
-
+import { DropDownModule } from "nativescript-drop-down/angular";
+import { ViewPostComponent } from './view-post/view-post.component';
 
 
 
@@ -30,7 +34,8 @@ import { DataService } from "./app.service";
         AppRoutingModule,
         NativeScriptRouterModule,
         NativeScriptFormsModule,
-        NativeScriptUISideDrawerModule
+        NativeScriptUISideDrawerModule,
+        DropDownModule
         
     
     ],
@@ -38,6 +43,9 @@ import { DataService } from "./app.service";
         AppComponent,
         HomepageComponent,
         SignUpComponent,
+        CategoryComponent,
+        WritePostComponent,
+        ViewPostComponent,
        
        
     ],

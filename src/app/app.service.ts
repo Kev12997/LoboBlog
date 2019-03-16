@@ -9,7 +9,8 @@ export class DataService {
   private username = new BehaviorSubject('default message');
   private message;
   public json;
-  public json2;
+  public category;
+  public categoryJson;
   currentUsername = this.username.asObservable();
 
   constructor() { }
@@ -40,6 +41,53 @@ export class DataService {
     firebase.getValue('/posts')
     .then(result => this.json = JSON.parse(JSON.stringify(result)))
     .catch(error => console.log("Error: " + error));
+  }
+
+  post_category(){
+    console.log(this.category);
+
+    var onQueryEvent = (result) => {
+      // note that the query returns 1 match at a time
+      // in the order specified in the query
+      if (!result.error) {
+          //this.categoryJson = JSON.stringify(result.value);
+        
+          this.categoryJson =JSON.parse(JSON.stringify(result));
+          
+      }
+  };
+
+  firebase.query(
+      onQueryEvent,
+      "/posts",
+      {
+          // set this to true if you want to check if the value exists or just want the event to fire once
+          // default false, so it listens continuously.
+          // Only when true, this function will return the data in the promise as well!
+          singleEvent: true,
+          orderBy: {
+              type: firebase.QueryOrderByType.CHILD,
+              value: "category"// mandatory when type is 'child'
+
+          },
+          ranges: [
+            {
+              type: firebase.QueryRangeType.START_AT,
+              value: this.category
+            },
+            {
+              type: firebase.QueryRangeType.END_AT,
+              value: this.category
+            }
+          ],
+         
+          limit: {
+              type: firebase.QueryLimitType.LAST,
+              value: 5
+          }
+      }
+  );
+
   }
 
 }

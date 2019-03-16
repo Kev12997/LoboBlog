@@ -1,0 +1,45 @@
+<Page class = "page">
+    <ActionBar class="action-bar" title="Create a Post" horizontalAlignment="center">
+        <NavigationButton text="menu" icon="res://baseline_menu_black_36" (tap)="openDrawer()"></NavigationButton>
+        <ActionItem (tap) = "post()" text="Post" android.position="right" [visibility]="elementModel.valid && elementModel2.valid &&  
+        elementModel3.valid ? 'visible' : 'collapse'"></ActionItem> 
+    </ActionBar>
+    <scrollView orientation = "vertical">
+
+     <StackLayout>
+            
+            <TextView class="input input-border" required hint="Your content" [(ngModel)]="titleText" 
+             #elementModel="ngModel" style = "background-color: white" maxLength="300" editable="True"></TextView>
+
+           
+            
+
+                <StackLayout class="hr-light m-10"></StackLayout>
+
+            <TextView [(ngModel)]="bodyText" required hint="Your content" editable="True"
+            #elementModel2="ngModel" class="input input-border" style = "background-color: white" maxLength="300"></TextView>
+ 
+                <StackLayout class="hr-light m-10"></StackLayout>
+
+        <GridLayout rows="auto, auto, *"
+                    columns="auto, *">
+            <DropDown #dd
+                      required
+                      hint = "Select a Department"
+                      backgroundColor="white"
+                      style="font-size: 25"
+                      [items]="items"
+                      #elementModel3="ngModel" 
+                      [(ngModel)]="selectedIndex"
+                      (selectedIndexChanged)="onchange($event)"
+                      row="0"
+                      colSpan="2"></DropDown>
+
+            
+            
+        </GridLayout>
+    </StackLayout>
+    </scrollView>
+</Page>
+
+
