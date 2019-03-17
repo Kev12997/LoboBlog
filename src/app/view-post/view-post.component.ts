@@ -23,6 +23,7 @@ export class ViewPostComponent implements OnInit {
   constructor(private router: Router, private page: Page, private data: DataService) { }
 
   ngOnInit() {
+    this.drawer = <RadSideDrawer>getRootView();
   }
 
   public openDrawer(){

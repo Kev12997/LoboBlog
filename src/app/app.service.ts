@@ -11,6 +11,7 @@ export class DataService {
   public json;
   public category;
   public categoryJson;
+  public cardKey;
   currentUsername = this.username.asObservable();
 
   constructor() { }

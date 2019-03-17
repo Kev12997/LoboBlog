@@ -69,6 +69,10 @@ export class CategoryComponent implements OnInit {
         card.radius=5;
         card.height = 200;
         card.ripple = true;
+        card.notify({ eventName: "tap", object: card});
+        card.on("tap", (eventData) => {
+          this.cardTap(key);
+        })
         
         const inGrid = new GridLayout(); //Create grid layout
 
@@ -108,6 +112,11 @@ export class CategoryComponent implements OnInit {
   }
   public openDrawer(){
     this.drawer.showDrawer();
+}
+
+public cardTap(key){
+  this.data.cardKey = key;
+  this.router.navigate(['viewPost']);
 }
 
 

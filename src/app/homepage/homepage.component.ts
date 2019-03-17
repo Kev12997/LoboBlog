@@ -19,6 +19,7 @@ import { CardView } from 'nativescript-cardview';
 import { StackLayout } from 'ui/layouts/stack-layout';
 import { GridLayout,GridUnitType, ItemSpec } from 'ui/layouts/grid-layout';
 import { Label } from 'ui/label';
+import { stringify } from '@angular/core/src/render3/util';
 
 
 registerElement('CardView', () => CardView);
@@ -86,7 +87,10 @@ export class HomepageComponent implements OnInit  {
         card.radius=5;
         card.height = 200;
         card.ripple = true;
-        
+        card.notify({ eventName: "tap", object: card});
+        card.on("tap", (eventData) => {
+          this.cardTap(key);
+        })
         
         
         
@@ -141,6 +145,11 @@ export class HomepageComponent implements OnInit  {
   public pageLoaded(){
     //console.log(this.body);
     
+  }
+  
+  public cardTap(key){
+    this.data.cardKey = key;
+    this.router.navigate(['viewPost']);
   }
 
 
