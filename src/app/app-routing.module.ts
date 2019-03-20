@@ -9,7 +9,7 @@ import { WritePostComponent } from './write-post/write-post.component';
 import { ViewPostComponent } from './view-post/view-post.component';
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
-    { path: "home", loadChildren: "~/app/home/home.module#HomeModule" },
+    { path: "home", loadChildren: "~/app/home/home.module#HomeModule" }, 
     { path: "homepage", component: HomepageComponent},
     { path: "signUp", component: SignUpComponent},
     { path: "category-page", component: CategoryComponent},

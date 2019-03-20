@@ -7,11 +7,12 @@ const firebase = require("nativescript-plugin-firebase");
 export class DataService {
 
   private username = new BehaviorSubject('default message');
-  private message;
+
   public json;
   public category;
   public categoryJson;
   public cardKey;
+  public individualPostInfo
   currentUsername = this.username.asObservable();
 
   constructor() { }
@@ -90,5 +91,14 @@ export class DataService {
   );
 
   }
+
+    viewPost(){
+      firebase.getValue('/posts/'+this.cardKey)
+      .then(result => this.individualPostInfo = JSON.parse(JSON.stringify(result)))
+      .catch(error => console.log("Error: " + error));
+      console.log(this.individualPostInfo);
+  }
+
+
 
 }

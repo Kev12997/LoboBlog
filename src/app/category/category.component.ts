@@ -14,9 +14,9 @@ import { DataService } from "../app.service";
 
 import { registerElement } from 'nativescript-angular/element-registry';
 import { CardView } from 'nativescript-cardview';
-import { StackLayout } from 'ui/layouts/stack-layout';
-import { GridLayout,GridUnitType, ItemSpec } from 'ui/layouts/grid-layout';
-import { Label } from 'ui/label';
+import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout';
+import { GridLayout,GridUnitType, ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout';
+import { Label } from 'tns-core-modules/ui/label';
 
 @Component({
   selector: 'ns-category',

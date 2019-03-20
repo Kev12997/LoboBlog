@@ -1,1 +1,13 @@
 /* Add mobile styles for the component here.  */
+.title{
+    margin-left: 10;  
+    font-size: 20;
+    font-weight: bold;
+}
+
+.body{
+    margin-left: 30;  
+    margin-top:5;
+    font-size: 15;
+    
+}

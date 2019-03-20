@@ -1,11 +1,13 @@
 <Page class = "page">
-    <ActionBar class="action-bar" title="View Post" horizontalAlignment="center">
+    <ActionBar class="action-bar" title="{{ actionBarTitle }}" horizontalAlignment="center" id = "actionBar">
         <NavigationButton text="menu" icon="res://baseline_menu_black_36" (tap)="openDrawer()"></NavigationButton>
     </ActionBar>
     <scrollView orientation = "vertical">
-        <stacklayout style.backgroundcolor="lightgray" width="100%" xmlns:card="nativescript-cardview" id = "outStack">
+        <stacklayout style.backgroundcolor="white" width="100%">
         
-    
+        <label class = "title" text = "{{ title }}"> </label>
+        <label class = "body" text = "{{ body }}"> </label>
+
             
 
 
