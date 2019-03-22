@@ -17,6 +17,8 @@ import { CardView } from 'nativescript-cardview';
 import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout';
 import { GridLayout,GridUnitType, ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout';
 import { Label } from 'tns-core-modules/ui/label';
+import application = require("application");
+
 
 @Component({
   selector: 'ns-category',
@@ -25,6 +27,8 @@ import { Label } from 'tns-core-modules/ui/label';
   moduleId: module.id,
 })
 export class CategoryComponent implements OnInit {
+  isNavVisible:boolean = false;
+  isItemVisible:boolean = false;
   category;
   categoryPost;
   public drawer: RadSideDrawer;
@@ -34,6 +38,15 @@ export class CategoryComponent implements OnInit {
   constructor(private router: Router, private page: Page, private data: DataService) { }
 
   ngOnInit() {
+    if (application.ios) {      
+       this.isNavVisible = false;
+       this.isItemVisible = true;
+       this.page.ios.navigationItem.hidesBackButton = true
+   } else if (application.android) {
+       this.isNavVisible = true;
+       this.isItemVisible = false;
+   }
+    
     this.category = this.data.category;
     this.drawer = <RadSideDrawer>getRootView();
     this.drawer.gesturesEnabled = true; 
@@ -42,6 +55,7 @@ export class CategoryComponent implements OnInit {
     this.data.post_category();
 
     setTimeout( () => {
+      
       this.categoryPost = this.data.categoryJson;
       
 
@@ -53,7 +67,7 @@ export class CategoryComponent implements OnInit {
         const lblCat = new Label();
 
         lblCat.horizontalAlignment = "right";
-        let pageCSS = ".title { font-size: 30; font-weight: bold;} .body{ font-size: 20;}";
+        let pageCSS = ".title { font-size: 30; font-weight: bold;} .body{ font-size: 20;} .background { background-color: white;}";
         this.page.css = pageCSS;
         lblCat.text = this.data.categoryJson.value[key].category; //value is json content, key acts as sub number 
         lblCat.className = "category";
@@ -63,6 +77,7 @@ export class CategoryComponent implements OnInit {
         lblTitle.text = this.data.categoryJson.value[key].title;
         lblTitle.className = "title";
         lblbody.style.verticalAlignment = "middle";
+        card.className = "background";
         card.elevation=10;
         card.marginBottom = 5;
         card.marginTop=5;

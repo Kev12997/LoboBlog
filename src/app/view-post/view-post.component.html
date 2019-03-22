@@ -1,20 +1,20 @@
-<Page class = "page">
-    <ActionBar class="action-bar" title="{{ actionBarTitle }}" horizontalAlignment="center" id = "actionBar">
-        <NavigationButton text="menu" icon="res://baseline_menu_black_36" (tap)="openDrawer()"></NavigationButton>
-    </ActionBar>
-    <scrollView orientation = "vertical">
-        <stacklayout style.backgroundcolor="white" width="100%">
-        
-        <label class = "title" text = "{{ title }}"> </label>
-        <label class = "body" text = "{{ body }}"> </label>
 
-            
-
-
-            
+<ActionBar class="action-bar" title="{{ actionBarTitle }}" horizontalAlignment="center" id = "actionBar">
+        <NavigationButton text="menu" icon="res://baseline_menu_black_36" (tap)="openDrawer()" *ngIf="isNavVisible"></NavigationButton>
+        <ActionItem icon="res://baseline_menu_black_36pt" ios.position="left" (tap)="openDrawer()" *ngIf="isItemVisible"></ActionItem>
+</ActionBar>
+<scrollView orientation = "vertical">
+    <stacklayout style.backgroundcolor="white" width="100%">
     
-            
+    <label class = "title" text = "{{ title }}"> </label>
+    <label class = "body" text = "{{ body }}"> </label>
+
         
-        </stacklayout>
-    </scrollView>
-</Page>
+
+
+        
+
+        
+    
+    </stacklayout>
+</scrollView>

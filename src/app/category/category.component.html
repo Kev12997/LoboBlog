@@ -1,20 +1,21 @@
-<Page class = "page">
-    <ActionBar class="action-bar" title="{{ category }}" horizontalAlignment="center">
-        <NavigationButton text="menu" icon="res://baseline_menu_black_36" (tap)="openDrawer()"></NavigationButton>
-    </ActionBar>
-    <scrollView orientation = "vertical">
 
-     <!-- GridLayout with CardView and Label NativeScript -->
-        <stacklayout style.backgroundcolor="lightgray" width="100%" xmlns:card="nativescript-cardview" id = "outStack">
+<ActionBar class="action-bar" title="{{ category }}" horizontalAlignment="center">
+        <NavigationButton text="menu" icon="res://baseline_menu_black_36" (tap)="openDrawer()" *ngIf="isNavVisible"></NavigationButton>
+        <ActionItem icon="res://baseline_menu_black_36pt" ios.position="left" (tap)="openDrawer()" *ngIf="isItemVisible"></ActionItem>
+</ActionBar>
+<scrollView orientation = "vertical">
+
+    <!-- GridLayout with CardView and Label NativeScript -->
+    <stacklayout style.backgroundcolor="lightgray" width="100%" xmlns:card="nativescript-cardview" id = "outStack">
+    
+
+        
+
+
+        
+
         
     
-            
+    </stacklayout>
+</scrollView>
 
-
-            
-    
-            
-        
-        </stacklayout>
-    </scrollView>
-</Page>

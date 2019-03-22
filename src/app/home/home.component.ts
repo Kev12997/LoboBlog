@@ -40,6 +40,9 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): void {
       setTimeout(() => {
+        // this.page.backgroundImage = "res://lobo";
+        // let pageCss = ".image{background-repeat: no-repeat;background-position: center;background-size: cover;}";
+        // this.page.css = pageCss;
         this.drawer = <RadSideDrawer>getRootView();
         this.drawer.gesturesEnabled = false; 
     }, 100);

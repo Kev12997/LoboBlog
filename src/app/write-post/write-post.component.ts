@@ -8,6 +8,8 @@ import { DataService } from "../app.service";
 import {Page} from 'tns-core-modules/ui/page';
 import {Router} from "@angular/router";
 import { SelectedIndexChangedEventData } from "nativescript-drop-down";
+import application = require("application");
+
 
 
 @Component({
@@ -17,6 +19,8 @@ import { SelectedIndexChangedEventData } from "nativescript-drop-down";
   moduleId: module.id,
 })
 export class WritePostComponent implements OnInit {
+  isNavVisible:boolean = false;
+  isItemVisible:boolean = false;
   public drawer: RadSideDrawer;
   public selectedIndex = null;
   public items: Array<string>;
@@ -35,6 +39,15 @@ export class WritePostComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (application.ios) {
+      this.page.ios.navigationItem.hidesBackButton = true
+       this.isNavVisible = false;
+       this.isItemVisible = true;
+       
+   } else if (application.android) {
+       this.isNavVisible = true;
+       this.isItemVisible = false;
+   }
     this.drawer = <RadSideDrawer>getRootView();
   }
 

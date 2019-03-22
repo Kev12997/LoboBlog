@@ -11,6 +11,7 @@ import {Page} from 'tns-core-modules/ui/page';
 import { BindingOptions } from "tns-core-modules/ui/core/bindable";
 import {Router} from "@angular/router";
 import { ActionBar } from 'tns-core-modules/ui/action-bar';
+import application = require("application");
 
 
 @Component({
@@ -20,6 +21,8 @@ import { ActionBar } from 'tns-core-modules/ui/action-bar';
   moduleId: module.id,
 })
 export class ViewPostComponent implements OnInit {
+  isNavVisible:boolean = false;
+  isItemVisible:boolean = false;
   public drawer: RadSideDrawer;
   public actionBarTitle;
   public title;
@@ -29,6 +32,15 @@ export class ViewPostComponent implements OnInit {
   constructor(private router: Router, private page: Page, private data: DataService) { }
 
   ngOnInit() {
+    if (application.ios) {
+      this.page.ios.navigationItem.hidesBackButton = true
+       this.isNavVisible = false;
+       this.isItemVisible = true;
+       
+   } else if (application.android) {
+       this.isNavVisible = true;
+       this.isItemVisible = false;
+   }
     this.drawer = <RadSideDrawer>getRootView();
     this.data.viewPost();
     setTimeout( () => {

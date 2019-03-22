@@ -21,6 +21,9 @@ import { GridLayout,GridUnitType, ItemSpec } from 'tns-core-modules/ui/layouts/g
 import { Label } from 'tns-core-modules/ui/label';
 import { stringify } from '@angular/core/src/render3/util';
 
+import application = require("application");
+import * as frameModule from "ui/frame";
+
 
 registerElement('CardView', () => CardView);
 
@@ -31,6 +34,8 @@ registerElement('CardView', () => CardView);
   moduleId: module.id,
 })
 export class HomepageComponent implements OnInit  {
+  isNavVisible:boolean = false;
+  isItemVisible:boolean = false;
   post;
   @ViewChild('stack') stack : StackLayout;
   username:string;
@@ -51,6 +56,16 @@ export class HomepageComponent implements OnInit  {
   
 
   ngOnInit() {
+    if (application.ios) {
+     // this.page.actionBarHidden
+     
+      this.isNavVisible = false;
+      this.isItemVisible = true;
+      this.page.ios.navigationItem.hidesBackButton = true
+  } else if (application.android) {
+      this.isNavVisible = true;
+      this.isItemVisible = false;
+  }
     
         this.drawer = <RadSideDrawer>getRootView();
         this.drawer.gesturesEnabled = true; 
@@ -71,7 +86,7 @@ export class HomepageComponent implements OnInit  {
         const lblCat = new Label();
 
         lblCat.horizontalAlignment = "right";
-        let pageCSS = ".title { font-size: 30; font-weight: bold;} .body{ font-size: 20;}";
+        let pageCSS = ".title { font-size: 30; font-weight: bold;} .body{ font-size: 20;} .background { background-color: white;}";
         this.page.css = pageCSS;
         lblCat.text = this.post.value[key].category; //value is json content, key acts as sub number 
         lblCat.className = "category";
@@ -81,6 +96,7 @@ export class HomepageComponent implements OnInit  {
         lblTitle.text = this.post.value[key].title;
         lblTitle.className = "title";
         lblbody.style.verticalAlignment = "middle";
+        card.className = "background";
         card.elevation=10;
         card.marginBottom = 5;
         card.marginTop=5;
