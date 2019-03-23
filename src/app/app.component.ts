@@ -1,6 +1,7 @@
 import { Component,ViewChild, OnInit, AfterViewInit, ChangeDetectorRef, Input, Output } from "@angular/core";
 import {Router, RouterModule} from "@angular/router";// includes router navigation
 import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
+import { RouterExtensions } from "nativescript-angular/router";//used for clear History
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { DataService } from "./app.service";
 
@@ -19,7 +20,7 @@ export class AppComponent implements AfterViewInit, OnInit {
     username:string;
 
     
-    constructor(location: Location, private _changeDetectionRef: ChangeDetectorRef, private router: Router, private data: DataService, ){
+    constructor(location: Location, private _changeDetectionRef: ChangeDetectorRef, private router: Router, private data: DataService, private routerExtension: RouterExtensions){
         //var username;
        
        
@@ -52,8 +53,8 @@ export class AppComponent implements AfterViewInit, OnInit {
     }
 
     public logOut(){
+        this.routerExtension.navigate(['/home'], { clearHistory: true });
         firebase.logout();//Logouts user from whatever methos hes logged in, gives console error cause facebook is not initialized
-        this.router.navigate(['home']);
         this.drawer.closeDrawer();
         alert("Logged out from account");
       }

@@ -5,10 +5,20 @@
 </ActionBar>
 <scrollView orientation = "vertical">
     <stacklayout style.backgroundcolor="white" width="100%">
-    
-    <label class = "title" text = "{{ title }}"> </label>
-    <label class = "body" text = "{{ body }}"> </label>
 
+            <CardView class="cardStyle" margin="10" height = "300" elevation="40" radius="1" style.backgroundcolor="white">
+                    <GridLayout rows="auto,200,auto,auto,auto,auto" columns="*,auto,auto">
+                            <label class = "title" text = "{{ title }}" row="0" col="0"> </label>
+                            <label class = "user" text = "Post by: {{ user_email }}" row="0" col="1"> </label>
+                            <Textview class = "body" style.backgroundcolor="white" editable = "false" text = "{{ body }}" row="1" colspan="2"> </Textview>
+                            
+
+                            <StackLayout class="hr-light m-10" row = "6" colspan = "2"></StackLayout>
+                            
+                    </GridLayout>
+            </CardView>
+    
+    
         
 
 

@@ -21,8 +21,7 @@ import { GridLayout,GridUnitType, ItemSpec } from 'tns-core-modules/ui/layouts/g
 import { Label } from 'tns-core-modules/ui/label';
 import { stringify } from '@angular/core/src/render3/util';
 
-import application = require("application");
-import * as frameModule from "ui/frame";
+import application = require("tns-core-modules/application");
 
 
 registerElement('CardView', () => CardView);

@@ -11,7 +11,7 @@ import {Page} from 'tns-core-modules/ui/page';
 import { BindingOptions } from "tns-core-modules/ui/core/bindable";
 import {Router} from "@angular/router";
 import { ActionBar } from 'tns-core-modules/ui/action-bar';
-import application = require("application");
+import application = require("tns-core-modules/application");
 
 
 @Component({
@@ -27,6 +27,7 @@ export class ViewPostComponent implements OnInit {
   public actionBarTitle;
   public title;
   public body;
+  public user_email;
 
 
   constructor(private router: Router, private page: Page, private data: DataService) { }
@@ -48,6 +49,7 @@ export class ViewPostComponent implements OnInit {
       this.actionBarTitle = this.data.individualPostInfo.value.category;
       this.title = this.data.individualPostInfo.value.title;
       this.body = this.data.individualPostInfo.value.body;
+      this.user_email = this.data.individualPostInfo.value.user_email;
 
 
 
