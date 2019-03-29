@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { firestore } from "nativescript-plugin-firebase";
 const firebase = require("nativescript-plugin-firebase");
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { getRootView } from "tns-core-modules/application";
-import * as appSettings from "tns-core-modules/application-settings";
 import { DataService } from "../app.service";
 import {Page} from 'tns-core-modules/ui/page';
 import {Router} from "@angular/router";

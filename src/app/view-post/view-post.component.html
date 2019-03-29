@@ -1,20 +1,36 @@
 
 <ActionBar class="action-bar" title="{{ actionBarTitle }}" horizontalAlignment="center" id = "actionBar">
-        <NavigationButton text="menu" icon="res://baseline_menu_black_36" (tap)="openDrawer()" *ngIf="isNavVisible"></NavigationButton>
-        <ActionItem icon="res://baseline_menu_black_36pt" ios.position="left" (tap)="openDrawer()" *ngIf="isItemVisible"></ActionItem>
+    <NavigationButton text="menu" icon="res://baseline_menu_black_36" (tap)="openDrawer()" *ngIf="isNavVisible"></NavigationButton>
+    <ActionItem icon="res://baseline_menu_black_36pt" ios.position="left" (tap)="openDrawer()" *ngIf="isItemVisible"></ActionItem>
 </ActionBar>
 <scrollView orientation = "vertical">
-    <stacklayout style.backgroundcolor="white" width="100%">
+<stacklayout style.backgroundcolor="white" width="100%">
+
+        <CardView class="cardStyle" margin="10" height = "300" elevation="40" radius="1" style.backgroundcolor="white">
+                <GridLayout rows="auto,200,auto,auto,auto,auto" columns="*,auto,auto">
+                        <label class = "title" text = "{{ title }}" row="0" col="0"> </label>
+                        <label class = "user" text = "Post by: {{ user_email }}" row="0" col="1"> </label>
+                        <Textview class = "body" style.backgroundcolor="white" editable = "false" text = "{{ body }}" row="1" colspan="2"> </Textview>
+                        
+
+                        <StackLayout class="hr-light m-10" row = "6" colspan = "2"></StackLayout>
+                        
+                </GridLayout>
+        </CardView>
+
+
     
-    <label class = "title" text = "{{ title }}"> </label>
-    <label class = "body" text = "{{ body }}"> </label>
-
-        
 
 
-        
-
-        
     
-    </stacklayout>
+
+    
+
+</stacklayout>
 </scrollView>
+
+<DockLayout stretchLastChild="false">
+   
+    <TextField  #textFId (returnPress)="postComment()" [(ngModel)]="comment" class="input input-border" hint="Comment Here!" maxLength="200" dock="bottom"> </TextField>
+
+</DockLayout>

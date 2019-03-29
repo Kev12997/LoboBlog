@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 const firebase = require("nativescript-plugin-firebase");
 
 
@@ -11,7 +11,9 @@ import {Page} from 'tns-core-modules/ui/page';
 import { BindingOptions } from "tns-core-modules/ui/core/bindable";
 import {Router} from "@angular/router";
 import { ActionBar } from 'tns-core-modules/ui/action-bar';
-import application = require("application");
+import application = require("tns-core-modules/application");
+import { TextField } from 'tns-core-modules/ui/text-field';
+
 
 
 @Component({
@@ -27,7 +29,10 @@ export class ViewPostComponent implements OnInit {
   public actionBarTitle;
   public title;
   public body;
-
+  public user_email;
+  public comment;
+  public key;
+  @ViewChild('textFId') textFieldComment : ElementRef;
 
   constructor(private router: Router, private page: Page, private data: DataService) { }
 
@@ -48,6 +53,8 @@ export class ViewPostComponent implements OnInit {
       this.actionBarTitle = this.data.individualPostInfo.value.category;
       this.title = this.data.individualPostInfo.value.title;
       this.body = this.data.individualPostInfo.value.body;
+      this.user_email = this.data.individualPostInfo.value.user_email;
+      this.key = this.data.individualPostInfo.key;
 
 
 
@@ -60,6 +67,14 @@ export class ViewPostComponent implements OnInit {
 
   public openDrawer(){
     this.drawer.showDrawer();
+    console.log(this.comment);
+    
+  }
+
+  public postComment(){
+    let tfElement = <TextField>this.textFieldComment.nativeElement;
+    tfElement.text = "";
+    this.data.postComment(this.comment, this.key);
   }
 
 }

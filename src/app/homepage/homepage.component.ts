@@ -1,16 +1,11 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { GestureEventData } from "tns-core-modules/ui/gestures";
-import { Observable, EventData } from "tns-core-modules/data/observable";
 import {Page} from 'tns-core-modules/ui/page';
-import { BindingOptions } from "tns-core-modules/ui/core/bindable";
 import {Router} from "@angular/router";
-import { firestore } from "nativescript-plugin-firebase";
-const firebase = require("nativescript-plugin-firebase");
+
 
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { getRootView } from "tns-core-modules/application";
-import * as appSettings from "tns-core-modules/application-settings";
 import { DataService } from "../app.service";
 
 
@@ -19,10 +14,8 @@ import { CardView } from 'nativescript-cardview';
 import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout';
 import { GridLayout,GridUnitType, ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout';
 import { Label } from 'tns-core-modules/ui/label';
-import { stringify } from '@angular/core/src/render3/util';
 
 import application = require("application");
-import * as frameModule from "ui/frame";
 
 
 registerElement('CardView', () => CardView);
@@ -36,7 +29,9 @@ registerElement('CardView', () => CardView);
 export class HomepageComponent implements OnInit  {
   isNavVisible:boolean = false;
   isItemVisible:boolean = false;
+  
   post;
+
   @ViewChild('stack') stack : StackLayout;
   username:string;
   
@@ -86,8 +81,10 @@ export class HomepageComponent implements OnInit  {
         const lblCat = new Label();
 
         lblCat.horizontalAlignment = "right";
+
         let pageCSS = ".title { font-size: 30; font-weight: bold;} .body{ font-size: 20;} .background { background-color: white;}";
         this.page.css = pageCSS;
+
         lblCat.text = this.post.value[key].category; //value is json content, key acts as sub number 
         lblCat.className = "category";
         lblbody.text = this.post.value[key].body;
@@ -96,6 +93,7 @@ export class HomepageComponent implements OnInit  {
         lblTitle.text = this.post.value[key].title;
         lblTitle.className = "title";
         lblbody.style.verticalAlignment = "middle";
+
         card.className = "background";
         card.elevation=10;
         card.marginBottom = 5;
@@ -103,7 +101,8 @@ export class HomepageComponent implements OnInit  {
         card.radius=5;
         card.height = 200;
         card.ripple = true;
-        card.notify({ eventName: "tap", object: card});
+
+        card.notify({ eventName: "tap", object: card}); //Adds tap to every card 
         card.on("tap", (eventData) => {
           this.cardTap(key);
         })
@@ -112,7 +111,7 @@ export class HomepageComponent implements OnInit  {
         
         const inGrid = new GridLayout(); //Create grid layout
 
-        
+        //EVERY CARD HAS A GRID LAYOUT INSIDE OF IT 
 
         card.content = inGrid; //add the layout inside the card
         inGrid.addChild(lblCat);//add labels to grid layout
@@ -155,7 +154,7 @@ export class HomepageComponent implements OnInit  {
 
 
     public openDrawer(){
-      this.drawer.showDrawer();
+      this.drawer.showDrawer(); //Opends side menu
   }
   
   public pageLoaded(){
@@ -164,8 +163,8 @@ export class HomepageComponent implements OnInit  {
   }
   
   public cardTap(key){
-    this.data.cardKey = key;
-    this.router.navigate(['viewPost']);
+    this.data.cardKey = key; //Sends JSON key of the selected card to the data service
+    this.router.navigate(['viewPost']); //navigates 
   }
 
 
