@@ -5,8 +5,9 @@ import { getRootView } from "tns-core-modules/application";
 import { DataService } from "../app.service";
 import {Page} from 'tns-core-modules/ui/page';
 import {Router} from "@angular/router";
+import { RouterExtensions } from "nativescript-angular/router";//used for clear History
 import { SelectedIndexChangedEventData } from "nativescript-drop-down";
-import application = require("application");
+import application = require("tns-core-modules/application");
 
 
 
@@ -28,7 +29,7 @@ export class WritePostComponent implements OnInit {
   public titleText;
   public email;
 
-  constructor(private router: Router, private page: Page, private data: DataService) { 
+  constructor(private router: Router,private routerExtension: RouterExtensions, private page: Page, private data: DataService) { 
     this.items = ["CCOM", "COMU","ADEM","BIOL","SIFI","ESPA","ENGL","CISO", "HUMA", "FISI","ENFER"];
     this.selectedCategory = this.items[0];  
     firebase.getCurrentUser()
@@ -70,11 +71,12 @@ export class WritePostComponent implements OnInit {
   ).then(
       (result) => {
         if(result){
-          this.router.navigate(['homepage']);
           alert("Post Created!");
+          if (application.ios) {
+          }
         }
       }
-  ).catch(error => alert(error));
+  ).then(this.routerExtension.navigate(['/homepage'], { clearHistory: true })).catch(error => alert(error));
   
 
   }

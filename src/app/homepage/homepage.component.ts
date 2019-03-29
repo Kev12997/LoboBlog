@@ -15,7 +15,7 @@ import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout';
 import { GridLayout,GridUnitType, ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout';
 import { Label } from 'tns-core-modules/ui/label';
 
-import application = require("application");
+import application = require("tns-core-modules/application");
 
 
 registerElement('CardView', () => CardView);
