@@ -11,6 +11,7 @@ export class DataService {
   public categoryJson; //Gets the post JSON of the selected categories
   public cardKey; //Gets the JSON Key of a card
   public individualPostInfo; //Gets the JSON of said cardKey
+  public comments;
 
   currentUsername = this.username.asObservable();
 
@@ -112,6 +113,42 @@ export class DataService {
         }
       }
   ).catch(error => alert(error));
+
+  }
+
+  loadcomments(postKey){
+    var onQueryEvent = result => {
+      // note that the query returns 1 match at a time
+      // in the order specified in the query
+      if (!result.error) {
+        //this.categoryJson = JSON.stringify(result.value);
+
+        this.comments = JSON.parse(JSON.stringify(result)); //sets the category to a variable
+      }
+    };
+
+    firebase.query(onQueryEvent, "/comments", {
+      // set this to true if you want to check if the value exists or just want the event to fire once
+      // default false, so it listens continuously.
+      // Only when true, this function will return the data in the promise as well!
+      singleEvent: true,
+      orderBy: {
+        type: firebase.QueryOrderByType.CHILD,
+        value: "postID" // mandatory when type is 'child'
+      },
+      range:
+        {
+          type: firebase.QueryRangeType.EQUAL_TO,
+          value: postKey
+        },
+        
+      
+
+      limit: {
+        type: firebase.QueryLimitType.LAST,
+        value: 5
+      }
+    });
 
   }
 }

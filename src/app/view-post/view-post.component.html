@@ -4,7 +4,7 @@
     <ActionItem icon="res://baseline_menu_black_36pt" ios.position="left" (tap)="openDrawer()" *ngIf="isItemVisible"></ActionItem>
 </ActionBar>
 <scrollView orientation = "vertical">
-<stacklayout style.backgroundcolor="white" width="100%">
+<stacklayout #mainStack style.backgroundcolor="white" width="100%">
 
         <CardView class="cardStyle" margin="10" height = "300" elevation="40" radius="1" style.backgroundcolor="white">
                 <GridLayout rows="auto,200,auto,auto,auto,auto" columns="*,auto,auto">
