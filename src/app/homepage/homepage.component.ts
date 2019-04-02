@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import {Page} from 'tns-core-modules/ui/page';
 import {Router} from "@angular/router";
 
@@ -16,7 +16,7 @@ import { GridLayout,GridUnitType, ItemSpec } from 'tns-core-modules/ui/layouts/g
 import { Label } from 'tns-core-modules/ui/label';
 
 import application = require("tns-core-modules/application");
-
+const firebase = require("nativescript-plugin-firebase");
 
 registerElement('CardView', () => CardView);
 
@@ -32,7 +32,7 @@ export class HomepageComponent implements OnInit  {
   
   post;
 
-  @ViewChild('stack') stack : StackLayout;
+  @ViewChild('stack') stack : ElementRef;
   username:string;
   
   public drawer: RadSideDrawer;
@@ -66,12 +66,22 @@ export class HomepageComponent implements OnInit  {
         this.drawer.gesturesEnabled = true; 
         const stack = <StackLayout>this.page.getViewById("outStack");
         
-        
+        this.posts();
     
-    this.data.posts(); //Call function in app.service to get post data
-    setTimeout( () => {
-      this.post = this.data.json;// assign to local variable
-      //console.log(this.post);
+   
+
+    
+   
+    
+    
+    
+  }
+
+  public posts(){
+    firebase
+    .getValue("/posts")
+    .then(result => {
+      (this.post = JSON.parse(JSON.stringify(result)))
 
       Object.keys(this.post.value).forEach(key => { //iterate on each value attribute
 
@@ -134,21 +144,18 @@ export class HomepageComponent implements OnInit  {
         GridLayout.setColumn(lblCat, 1)
         GridLayout.setColumn(lblTitle, 0);
         GridLayout.setColumn(lblbody, 0);
+
+        let stack = <StackLayout>this.stack.nativeElement;
         
         stack.addChild(card);//add the card to the XML stackLayout
         
         
       });
-
       
 
-    }, 1000);
+    })
+    .catch(error => console.log("Error: " + error));
 
-    
-   
-    
-    
-    
   }
 
 

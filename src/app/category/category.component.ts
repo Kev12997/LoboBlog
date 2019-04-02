@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import {Page} from 'tns-core-modules/ui/page';
 import {Router} from "@angular/router";
 
@@ -11,6 +11,8 @@ import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout';
 import { GridLayout,GridUnitType, ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout';
 import { Label } from 'tns-core-modules/ui/label';
 import application = require("tns-core-modules/application");
+const firebase = require("nativescript-plugin-firebase");
+
 
 
 @Component({
@@ -27,8 +29,9 @@ export class CategoryComponent implements OnInit {
   categoryPost; //Used to get the Json locally
 
   public drawer: RadSideDrawer;
+  public categoryJson;
 
-  @ViewChild('stack') stack : StackLayout; //Locates local stack in xml (Dunno if this is nessesary tbh...)
+  @ViewChild('stack') stack : ElementRef; //Locates local stack in xml
   
 
   constructor(private router: Router, private page: Page, private data: DataService) { }
@@ -48,14 +51,63 @@ export class CategoryComponent implements OnInit {
     this.drawer.gesturesEnabled = true; 
     const stack = <StackLayout>this.page.getViewById("outStack");
 
-    this.data.post_category(); //Sets category selected
 
-    setTimeout( () => {
-      
-      this.categoryPost = this.data.categoryJson;
+    this.postByCategory();
+
+
+  }
+  public openDrawer(){
+    this.drawer.showDrawer(); //Opens side menu
+}
+
+public cardTap(key){
+  this.data.cardKey = key; //Gives selected card JSON Ket to the aplication service
+  this.router.navigate(['viewPost']); //Navigates to the Post page
+}
+
+  public postByCategory(){
+
+    //Gets category selected and displays posts with said category
+    console.log(this.category);
+
+    var onQueryEvent = result => {
+      // note that the query returns 1 match at a time
+      // in the order specified in the query
+      if (!result.error) {
+        //this.categoryJson = JSON.stringify(result.value);
+
+        this.categoryJson = JSON.parse(JSON.stringify(result)); //sets the category to a variable
+      }
+    };
+
+    firebase.query(onQueryEvent, "/posts", {
+      // set this to true if you want to check if the value exists or just want the event to fire once
+      // default false, so it listens continuously.
+      // Only when true, this function will return the data in the promise as well!
+      singleEvent: true,
+      orderBy: {
+        type: firebase.QueryOrderByType.CHILD,
+        value: "category" // mandatory when type is 'child'
+      },
+      ranges: [
+        {
+          type: firebase.QueryRangeType.START_AT,
+          value: this.category
+        },
+        {
+          type: firebase.QueryRangeType.END_AT,
+          value: this.category
+        }
+      ],
+
+      limit: {
+        type: firebase.QueryLimitType.LAST,
+        value: 5
+      }
+    }).then( () => {
       
 
-      Object.keys(this.categoryPost.value).forEach(key => { //iterate on each value attribute
+      Object.keys(this.categoryJson.value).forEach(key => { //iterate on each value attribute
 
         const card = new CardView();//create card and labels
         const lblbody = new Label();
@@ -67,12 +119,12 @@ export class CategoryComponent implements OnInit {
         let pageCSS = ".title { font-size: 30; font-weight: bold;} .body{ font-size: 20;} .background { background-color: white;}"; //CSS for page
         this.page.css = pageCSS;
 
-        lblCat.text = this.data.categoryJson.value[key].category; //value is json content, key acts as sub number 
+        lblCat.text = this.categoryJson.value[key].category; //value is json content, key acts as sub number 
         lblCat.className = "category";
-        lblbody.text = this.data.categoryJson.value[key].body;
+        lblbody.text = this.categoryJson.value[key].body;
         lblbody.className = "body";
         lblbody.marginLeft = 20;
-        lblTitle.text = this.data.categoryJson.value[key].title;
+        lblTitle.text = this.categoryJson.value[key].title;
         lblTitle.className = "title";
         lblbody.style.verticalAlignment = "middle";
 
@@ -115,25 +167,15 @@ export class CategoryComponent implements OnInit {
         GridLayout.setColumn(lblTitle, 0);
         GridLayout.setColumn(lblbody, 0);
         
+        let stack = <StackLayout>this.stack.nativeElement;
         stack.addChild(card);//add the card to the XML stackLayout
         
         
       });
 
-      
-
-    }, 1000);
-
+    });
 
   }
-  public openDrawer(){
-    this.drawer.showDrawer(); //Opens side menu
-}
-
-public cardTap(key){
-  this.data.cardKey = key; //Gives selected card JSON Ket to the aplication service
-  this.router.navigate(['viewPost']); //Navigates to the Post page
-}
 
 
 
