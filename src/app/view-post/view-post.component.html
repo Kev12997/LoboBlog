@@ -4,16 +4,22 @@
     <ActionItem icon="res://baseline_menu_black_36pt" ios.position="left" (tap)="openDrawer()" *ngIf="isItemVisible"></ActionItem>
 </ActionBar>
 <scrollView orientation = "vertical">
-<stacklayout #mainStack style.backgroundcolor="white" width="100%">
+<stacklayout #mainStack style.backgroundcolor="lightgray" width="100%">
         <CardView class="cardStyle" margin="10" height = "300" elevation="40" radius="1" style.backgroundcolor="white">
-                <GridLayout rows="auto,200,auto,auto,auto,auto" columns="*,auto,auto">
+                <GridLayout rows="auto,200,auto,auto,auto,auto,auto" columns="*,auto,auto, auto">
                         <label class = "title" text = "{{ title }}" row="0" col="0"> </label>
                         <label class = "user" text = "Post by: {{ user_email }}" row="0" col="1"> </label>
                         <Textview class = "body" style.backgroundcolor="white" editable = "false" text = "{{ body }}" row="1" colspan="2"> </Textview>
                         
 
-                        <StackLayout class="hr-light m-10" row = "6" colspan = "2"></StackLayout>
+                        <StackLayout class="hr-light m-10" row = "2" colspan = "3"></StackLayout>
                         
+                        <GridLayout row = "3" col = "0" rows="auto" columns="10,*,*,*,*">
+                        <label text = "10" row="0" col="1"> </label>
+                        <Image src="res://baseline_thumb_up_black_24" row = "0" col = "2" stretch="none"></Image>
+                        <Image src="res://baseline_thumb_down_black_24" row = "0" col = "3" stretch="none"></Image>
+                        <Image src="res://baseline_add_comment_black_24" row = "0" col = "4" stretch="none"></Image>
+                        </GridLayout>
                 </GridLayout>
         </CardView>
 
@@ -24,12 +30,12 @@
     
 
     
-
+        
 </stacklayout>
 </scrollView>
-
 <DockLayout stretchLastChild="false">
    
-    <TextField  #textFId (returnPress)="postComment()" [(ngModel)]="comment" class="input input-border" hint="Comment Here!" maxLength="200" dock="bottom"> </TextField>
-
+        <TextField  #textFId (returnPress)="postComment()" [(ngModel)]="comment" class="input input-border" hint="Comment Here!" maxLength="200" dock="bottom"> </TextField>
+    
 </DockLayout>
+

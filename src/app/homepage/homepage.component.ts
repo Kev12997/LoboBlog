@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, NgZone } from '@angular/core';
 import {Page} from 'tns-core-modules/ui/page';
 import {Router} from "@angular/router";
+import { RouterExtensions } from "nativescript-angular/router";//used for clear History
 
 
 
@@ -17,6 +18,8 @@ import { Label } from 'tns-core-modules/ui/label';
 
 import application = require("tns-core-modules/application");
 const firebase = require("nativescript-plugin-firebase");
+import {LoadingIndicator} from "nativescript-loading-indicator";
+var loader = new LoadingIndicator();
 
 registerElement('CardView', () => CardView);
 
@@ -41,7 +44,7 @@ export class HomepageComponent implements OnInit  {
 
   
 
-  constructor(private router: Router, private page: Page, private data: DataService) {
+  constructor(private ngZone: NgZone,private router: Router, private page: Page, private data: DataService, private routerExtension: RouterExtensions) {
     
     
     
@@ -78,6 +81,7 @@ export class HomepageComponent implements OnInit  {
   }
 
   public posts(){
+    loader.show(this.data.options);
     firebase
     .getValue("/posts")
     .then(result => {
@@ -149,7 +153,7 @@ export class HomepageComponent implements OnInit  {
         
         stack.addChild(card);//add the card to the XML stackLayout
         
-        
+        loader.hide();
       });
       
 
@@ -171,7 +175,10 @@ export class HomepageComponent implements OnInit  {
   
   public cardTap(key){
     this.data.cardKey = key; //Sends JSON key of the selected card to the data service
-    this.router.navigate(['viewPost']); //navigates 
+    this.ngZone.run(() => this.router.navigate(['viewPost'])).then();
+    //this.router.navigate(['viewPost']); //navigates 
+    //this.routerExtension.navigate(['viewPost'], { clearHistory: true });
+    //console.log("test");  
   }
 
 

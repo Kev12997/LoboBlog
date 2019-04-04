@@ -4,20 +4,17 @@ const firebase = require("nativescript-plugin-firebase");
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { getRootView } from "tns-core-modules/application";
-import * as appSettings from "tns-core-modules/application-settings";
 import { DataService } from "../app.service";
 
 import {Page} from 'tns-core-modules/ui/page';
-import { BindingOptions } from "tns-core-modules/ui/core/bindable";
 import {Router} from "@angular/router";
-import { ActionBar } from 'tns-core-modules/ui/action-bar';
 import { TextField } from 'tns-core-modules/ui/text-field';
 
-import { registerElement } from 'nativescript-angular/element-registry';
 import { CardView } from 'nativescript-cardview';
 import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout';
 import { GridLayout,GridUnitType, ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout';
 import { Label } from 'tns-core-modules/ui/label';
+
 
 
 import application = require("tns-core-modules/application");
@@ -62,7 +59,7 @@ export class ViewPostComponent implements OnInit {
     
     
       
-     this.loadPost();
+    this.loadPost();
     
     
     
@@ -82,6 +79,7 @@ export class ViewPostComponent implements OnInit {
   }
 
   public loadPost(){
+    //loader.show(this.data.options);
     firebase
     .getValue("/posts/" + this.data.cardKey)
     .then(
@@ -95,6 +93,7 @@ export class ViewPostComponent implements OnInit {
         this.user_email = this.data.individualPostInfo.value.user_email;
         this.key = this.data.individualPostInfo.key;
         this.loadComments();
+        //loader.hide(); 
       }
     )
     .catch(error => console.log("Error: " + error));
@@ -159,6 +158,7 @@ export class ViewPostComponent implements OnInit {
         
         card.className = "background";
         card.elevation=10;
+        card.margin = 10;
         card.marginBottom = 5;
         card.marginTop=5;
         card.radius=5;

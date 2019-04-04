@@ -1,18 +1,18 @@
-import { Component, OnInit, Output, EventEmitter  } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {Page} from 'tns-core-modules/ui/page'; //
 
-import { TextField } from "tns-core-modules/ui/text-field";
 import {Router} from "@angular/router";// includes router navigation
-import { routerNgProbeToken } from "@angular/router/src/router_module";
 const firebase = require("nativescript-plugin-firebase"); //includes firebase plugin
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { getRootView } from "tns-core-modules/application";
-import * as appSettings from "tns-core-modules/application-settings";
 import { DataService } from "../app.service";
-import { Image } from "tns-core-modules/ui/image";
 
-// and later during the page initialization
+import {LoadingIndicator} from "nativescript-loading-indicator";
+var loader = new LoadingIndicator();
+
+
+
 
 
 
@@ -52,20 +52,24 @@ export class HomeComponent implements OnInit {
     
 
     public submit(){
+      //loader.show(this.data.options);
      
         //this.router.navigate(['/homepage']);
-        firebase.login( // logs in user
+        firebase.login(  // logs in user
           {
             
             type: firebase.LoginType.GOOGLE, //the type of login by the plugin
             googleOptions: {
               hostedDomain: "upr.edu"
             }
+            
           }).then(
             (user) => {
-              var letter;
+              
+              
               this.router.navigate(['homepage']); //after the function starts navigates to the homepage
               this.data.changeUsername(user.name)
+              //loader.hide();
             } 
           )
           .catch(error => alert(error)); // Passes error to console 

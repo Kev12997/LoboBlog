@@ -12,6 +12,8 @@ import { GridLayout,GridUnitType, ItemSpec } from 'tns-core-modules/ui/layouts/g
 import { Label } from 'tns-core-modules/ui/label';
 import application = require("tns-core-modules/application");
 const firebase = require("nativescript-plugin-firebase");
+import {LoadingIndicator} from "nativescript-loading-indicator";
+var loader = new LoadingIndicator();
 
 
 
@@ -105,9 +107,11 @@ public cardTap(key){
         value: 5
       }
     }).then( () => {
-      
+      console.log(this.categoryJson.value)
+      if(this.categoryJson.value){
 
       Object.keys(this.categoryJson.value).forEach(key => { //iterate on each value attribute
+        
 
         const card = new CardView();//create card and labels
         const lblbody = new Label();
@@ -171,8 +175,17 @@ public cardTap(key){
         stack.addChild(card);//add the card to the XML stackLayout
         
         
+        
       });
 
+    }else{
+      console.log("No result");
+    }
+  }
+
+    ).catch( (error) => {
+      console.log(error);
+      
     });
 
   }
