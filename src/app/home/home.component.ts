@@ -59,9 +59,7 @@ export class HomeComponent implements OnInit {
           {
             
             type: firebase.LoginType.GOOGLE, //the type of login by the plugin
-            googleOptions: {
-              hostedDomain: "upr.edu"
-            }
+            
             
           }).then(
             (user) => {

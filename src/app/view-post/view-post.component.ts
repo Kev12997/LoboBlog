@@ -165,6 +165,7 @@ export class ViewPostComponent implements OnInit {
         card.height = 200;
         card.ripple = true;
         
+        
         const inGrid = new GridLayout(); //Create grid layout
   
         //EVERY CARD HAS A GRID LAYOUT INSIDE OF IT 
