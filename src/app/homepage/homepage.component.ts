@@ -5,6 +5,7 @@ import { RouterExtensions } from "nativescript-angular/router";//used for clear 
 
 
 
+
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { getRootView } from "tns-core-modules/application";
 import { DataService } from "../app.service";
@@ -32,8 +33,12 @@ registerElement('CardView', () => CardView);
 export class HomepageComponent implements OnInit  {
   isNavVisible:boolean = false;
   isItemVisible:boolean = false;
+  public fruitList: Array<string> = [];
+  public jsons = [];
+  public keys = new Object();
   
   post;
+  objectKeys;
 
   @ViewChild('stack') stack : ElementRef;
   username:string;
@@ -46,6 +51,9 @@ export class HomepageComponent implements OnInit  {
 
   constructor(private ngZone: NgZone,private router: Router, private page: Page, private data: DataService, private routerExtension: RouterExtensions) {
     
+    this.fruitList.push('manzana');
+    this.fruitList.push('banana');
+    this.fruitList.push('ana');
     
     
     
@@ -68,9 +76,11 @@ export class HomepageComponent implements OnInit  {
         this.drawer = <RadSideDrawer>getRootView();
         this.drawer.gesturesEnabled = true; 
         const stack = <StackLayout>this.page.getViewById("outStack");
+
         
         this.posts();
-    
+        
+        
    
 
     
@@ -81,80 +91,23 @@ export class HomepageComponent implements OnInit  {
   }
 
   public posts(){
-    loader.show(this.data.options);
+    
+    
+    //loader.show(this.data.options);
     firebase
     .getValue("/posts")
     .then(result => {
+     
       (this.post = JSON.parse(JSON.stringify(result)))
-
       Object.keys(this.post.value).forEach(key => { //iterate on each value attribute
-
-        const card = new CardView();//create card and labels
-        const lblbody = new Label();
-        const lblTitle = new Label();
-        const lblCat = new Label();
-
-        lblCat.horizontalAlignment = "right";
-
-        let pageCSS = ".title { font-size: 30; font-weight: bold;} .body{ font-size: 20;} .background { background-color: white;}";
-        this.page.css = pageCSS;
-
-        lblCat.text = this.post.value[key].category; //value is json content, key acts as sub number 
-        lblCat.className = "category";
-        lblbody.text = this.post.value[key].body;
-        lblbody.className = "body";
-        lblbody.marginLeft = 20;
-        lblTitle.text = this.post.value[key].title;
-        lblTitle.className = "title";
-        lblbody.style.verticalAlignment = "middle";
-
-        card.className = "background";
-        card.elevation=10;
-        card.marginBottom = 5;
-        card.marginTop=5;
-        card.radius=5;
-        card.height = 200;
-        card.ripple = true;
-
-        card.notify({ eventName: "tap", object: card}); //Adds tap to every card 
-        card.on("tap", (eventData) => {
-          this.cardTap(key);
-        })
-        
-        
-        
-        const inGrid = new GridLayout(); //Create grid layout
-
-        //EVERY CARD HAS A GRID LAYOUT INSIDE OF IT 
-
-        card.content = inGrid; //add the layout inside the card
-        inGrid.addChild(lblCat);//add labels to grid layout
-        inGrid.addChild(lblTitle);
-        inGrid.addChild(lblbody);
-
-        inGrid.addColumn(new ItemSpec(1, GridUnitType.STAR)); //Layout properties
-        inGrid.addColumn(new ItemSpec(1, GridUnitType.AUTO));
-        inGrid.addColumn(new ItemSpec(1, GridUnitType.AUTO));
-
-        inGrid.addRow(new ItemSpec(1, GridUnitType.AUTO));
-        inGrid.addRow(new ItemSpec(1, GridUnitType.AUTO));
-        inGrid.addRow(new ItemSpec(1, GridUnitType.AUTO));
-        
-
-        GridLayout.setRow(lblCat, 0);//collums and rows of each grid element
-        GridLayout.setRow(lblTitle, 0);
-        GridLayout.setRow(lblbody, 1);
-
-        GridLayout.setColumn(lblCat, 1)
-        GridLayout.setColumn(lblTitle, 0);
-        GridLayout.setColumn(lblbody, 0);
-
-        let stack = <StackLayout>this.stack.nativeElement;
-        
-        stack.addChild(card);//add the card to the XML stackLayout
-        
-        loader.hide();
+      this.post.value[key]['key']=key;
+      this.jsons.push(this.post.value[key]);
+      
+      
       });
+      console.log(this.jsons);
+
+      
       
 
     })
@@ -166,6 +119,8 @@ export class HomepageComponent implements OnInit  {
 
     public openDrawer(){
       this.drawer.showDrawer(); //Opends side menu
+      
+      //console.log(this.post);
   }
   
   public pageLoaded(){

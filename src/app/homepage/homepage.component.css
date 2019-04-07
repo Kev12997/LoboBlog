@@ -1,2 +1,11 @@
 /* Add mobile styles for the component here.  */
-.title { font-size: 30;}
+.title { 
+    font-size: 30;
+    font-weight: bold;
+}
+
+.body {
+    font-size: 20;
+    margin-left: 20;
+}
+

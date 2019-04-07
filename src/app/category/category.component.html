@@ -3,19 +3,16 @@
         <NavigationButton text="menu" icon="res://baseline_menu_black_36" (tap)="openDrawer()" *ngIf="isNavVisible"></NavigationButton>
         <ActionItem icon="res://baseline_menu_black_36pt" ios.position="left" (tap)="openDrawer()" *ngIf="isItemVisible"></ActionItem>
 </ActionBar>
-<scrollView orientation = "vertical">
-
-    <!-- GridLayout with CardView and Label NativeScript -->
-    <stacklayout #stack style.backgroundcolor="lightgray" width="100%" xmlns:card="nativescript-cardview" id = "outStack">
-    
-
-        
-
-
-        
-
-        
-    
-    </stacklayout>
-</scrollView>
+<ListView [items]="jsons" separatorColor="lightgray" style.backgroundcolor = "lightgray" rowHeight="200">
+    <ng-template let-jsons="item">
+        <!-- The item template can only have a single root view container (e.g. GridLayout, StackLayout, etc.)-->
+        <Cardview #test (tap)="cardTap(jsons.key)" elevation = "10" margin = "5"  radius= "5" ripple = "true" style.backgroundcolor="white">
+            <GridLayout rows = "auto,auto,auto" columns = "*,auto,auto"> 
+                <label [text] = "jsons.category" row = "0" col = "1"></label>
+                <label [text] = "jsons.title" row = "0" col = "0" class = "title"></label>
+                <label [text] = "jsons.body" row = "1" col = "0" class = "body"></label>
+            </GridLayout>
+        </Cardview>
+    </ng-template>
+</ListView>
 

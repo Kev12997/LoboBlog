@@ -47,7 +47,7 @@ export class AppComponent implements AfterViewInit, OnInit {
             }
     })
         this.data.currentUsername.subscribe(username => this.username = username)
-
+    
       
         
     }

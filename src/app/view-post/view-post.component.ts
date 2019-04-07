@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 const firebase = require("nativescript-plugin-firebase");
+var dialogs = require("tns-core-modules/ui/dialogs");
 
 
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
@@ -38,10 +39,14 @@ export class ViewPostComponent implements OnInit {
   public comment;
   public key;
   public postComments;
+  public likes;
+  public userDetailsJson = {};
   processing;
 
   @ViewChild('textFId') textFieldComment : ElementRef; 
   @ViewChild('mainStack') mainStackLayout : ElementRef; 
+  post: any;
+  public jsons = [];
 
   constructor(private router: Router, private page: Page, private data: DataService) { }
 
@@ -73,9 +78,18 @@ export class ViewPostComponent implements OnInit {
   }
 
   public postComment(){
-    let tfElement = <TextField>this.textFieldComment.nativeElement;
-    tfElement.text = "";
-    this.data.postComment(this.comment, this.key);
+    dialogs.prompt({
+      title: "Comment",
+      message: "Write a comment!",
+      okButtonText: "Post Comment",
+      cancelButtonText: "Cancel",
+      inputType: dialogs.inputType.TextField
+  }).then( (r) => {
+     
+      this.data.postComment(r.text, this.key);
+  });
+   
+    
   }
 
   public loadPost(){
@@ -92,15 +106,13 @@ export class ViewPostComponent implements OnInit {
         this.body = this.data.individualPostInfo.value.body;
         this.user_email = this.data.individualPostInfo.value.user_email;
         this.key = this.data.individualPostInfo.key;
+        this.likes = this.data.individualPostInfo.value.likes;
+        
         this.loadComments();
         //loader.hide(); 
       }
     )
     .catch(error => console.log("Error: " + error));
-  
-    //this.data.viewPost();
-    
-    //this.data.loadcomments(this.key);
     
 
 
@@ -109,6 +121,7 @@ export class ViewPostComponent implements OnInit {
   }
 
   public loadComments(){
+
     var onQueryEvent = result => {
       // note that the query returns 1 match at a time
       // in the order specified in the query
@@ -133,72 +146,255 @@ export class ViewPostComponent implements OnInit {
           type: firebase.QueryRangeType.EQUAL_TO,
           value: this.key
         },
-        
-      
-
       limit: {
         type: firebase.QueryLimitType.LAST,
         value: 5
       }
-    }).then( () => {
-      console.log(this.postComments);
-      Object.keys(this.postComments.value).forEach(key => {
-        const card = new CardView();//create card and labels
-        const lblAuth = new Label();
-        const lblBody = new Label();
-  
-        
-  
-        let pageCSS = ".title { font-size: 30; font-weight: bold;} .body{ font-size: 20;} .background { background-color: white;}";
-        this.page.css = pageCSS;
-        
-        lblBody.text = this.postComments.value[key].body;
-        lblBody.className = "body";
-        lblBody.marginLeft = 20;
-        
-        card.className = "background";
-        card.elevation=10;
-        card.margin = 10;
-        card.marginBottom = 5;
-        card.marginTop=5;
-        card.radius=5;
-        card.height = 200;
-        card.ripple = true;
-        
-        
-        const inGrid = new GridLayout(); //Create grid layout
-  
-        //EVERY CARD HAS A GRID LAYOUT INSIDE OF IT 
-  
-        card.content = inGrid; //add the layout inside the card
-        inGrid.addChild(lblBody);//add labels to grid layout
-        // inGrid.addChild(lblTitle);
-        // inGrid.addChild(lblbody);
-  
-        inGrid.addColumn(new ItemSpec(1, GridUnitType.STAR)); //Layout properties
-        inGrid.addColumn(new ItemSpec(1, GridUnitType.AUTO));
-        inGrid.addColumn(new ItemSpec(1, GridUnitType.AUTO));
-  
-        inGrid.addRow(new ItemSpec(1, GridUnitType.AUTO));
-        inGrid.addRow(new ItemSpec(1, GridUnitType.AUTO));
-        inGrid.addRow(new ItemSpec(1, GridUnitType.AUTO));
-        
-  
-        //GridLayout.setRow(lblCat, 0);//collums and rows of each grid element
-        // GridLayout.setRow(lblTitle, 0);
-         GridLayout.setRow(lblBody, 1);
-  
-        // GridLayout.setColumn(lblCat, 1)
-        // GridLayout.setColumn(lblTitle, 0);
-        GridLayout.setColumn(lblBody, 0);
-  
-        let stack = <StackLayout>this.mainStackLayout.nativeElement;
-        
-        stack.addChild(card);//add the card to the XML stackLayout
-  
-      } )
+    }).then( (result) => {
+
+      (this.post = JSON.parse(JSON.stringify(result)))
+      Object.keys(this.post.value).forEach(key => { //iterate on each value attribute
+      this.post.value[key]['key']=key;
+      this.jsons.push(this.post.value[key]);
+      });
     });
 
   }
+
+  public like(){
+    var onQueryEvent = function(result) {
+      // note that the query returns 1 match at a time
+      // in the order specified in the query
+      if (!result.error) {
+          //console.log(result);
+      } 
+  };
+
+  
+  
+  
+
+  firebase.query(onQueryEvent, "/user_detail", {
+    // set this to true if you want to check if the value exists or just want the event to fire once
+    // default false, so it listens continuously.
+    // Only when true, this function will return the data in the promise as well!
+    singleEvent: true,
+    orderBy: {
+      type: firebase.QueryOrderByType.CHILD,
+      value: "email" // mandatory when type is 'child'
+    },
+    range:
+      {
+        type: firebase.QueryRangeType.EQUAL_TO,
+        value: this.data.email
+      },
+    limit: {
+      type: firebase.QueryLimitType.LAST,
+      value: 1
+    }
+  }).then( (result) => {
+     console.log(result);
+  Object.keys(result.value).forEach(key => { //iterate on each value attribute
+    var likes = result.value[key].likedPosts;
+    firebase.query(onQueryEvent, "/user_detail/"+ key +"/likedPosts", {
+      // set this to true if you want to check if the value exists or just want the event to fire once
+      // default false, so it listens continuously.
+      // Only when true, this function will return the data in the promise as well!
+      singleEvent: true,
+      orderBy: {
+        type: firebase.QueryOrderByType.CHILD,
+        value: "postKey" // mandatory when type is 'child'
+      },
+      range:
+        {
+          type: firebase.QueryRangeType.EQUAL_TO,
+          value: this.data.cardKey
+        },
+      limit: {
+        type: firebase.QueryLimitType.LAST,
+        value: 1
+      }
+    }).then((result) => {
+      if(Object.keys(result.value).length == 0){
+        firebase.query(onQueryEvent, "/user_detail/"+ key +"/dislikedPosts", {
+          // set this to true if you want to check if the value exists or just want the event to fire once
+          // default false, so it listens continuously.
+          // Only when true, this function will return the data in the promise as well!
+          singleEvent: true,
+          orderBy: {
+            type: firebase.QueryOrderByType.CHILD,
+            value: "postKey" // mandatory when type is 'child'
+          },
+          range:
+            {
+              type: firebase.QueryRangeType.EQUAL_TO,
+              value: this.data.cardKey
+            },
+          limit: {
+            type: firebase.QueryLimitType.LAST,
+            value: 1
+          }
+        }).then((result)=>
+        {
+          Object.keys(result.value).forEach(delKey => {
+          firebase.remove("/user_detail/"+key+"/dislikedPosts/" + delKey);
+          })
+        }
+        )
+
+        firebase.push("/user_detail/"+ key +"/likedPosts",
+          {
+            'postKey': this.data.cardKey
+          }
+        )
+        var path;
+    path = "/posts/" + this.key + "/likes";
+    firebase.transaction(path, (currentValue => {
+      if (currentValue === null) {
+        return 0;
+      } else {
+        return ++currentValue; // Increment the current value. Do not try to increment currentValue if its NaN!
+      }
+    }))
+     .then((result) => {
+       console.log("Succes");
+       firebase.getValue(path)
+      .then(result => {
+        var json;
+        console.log(JSON.stringify(result))
+        json = JSON.parse(JSON.stringify(result))
+        this.likes = json.value;
+      }
+        )
+      .catch(error => console.log("Error: " + error));
+      }).catch(err => console.log("Encountered an error " + err));
+      }
+    })
+          
+    
+  });
+  }).catch((error) => console.log(error));
+
+    
+    
+  }
+
+  public dislike(){
+
+    var onQueryEvent = function(result) {
+      // note that the query returns 1 match at a time
+      // in the order specified in the query
+      if (!result.error) {
+          //console.log(result);
+      } 
+  };
+
+  firebase.query(onQueryEvent, "/user_detail", {
+    // set this to true if you want to check if the value exists or just want the event to fire once
+    // default false, so it listens continuously.
+    // Only when true, this function will return the data in the promise as well!
+    singleEvent: true,
+    orderBy: {
+      type: firebase.QueryOrderByType.CHILD,
+      value: "email" // mandatory when type is 'child'
+    },
+    range:
+      {
+        type: firebase.QueryRangeType.EQUAL_TO,
+        value: this.data.email
+      },
+    limit: {
+      type: firebase.QueryLimitType.LAST,
+      value: 1
+    }
+  }).then( (result) => {
+     console.log(result);
+  Object.keys(result.value).forEach(key => { //iterate on each value attribute
+    
+    firebase.query(onQueryEvent, "/user_detail/"+ key +"/dislikedPosts", {
+      // set this to true if you want to check if the value exists or just want the event to fire once
+      // default false, so it listens continuously.
+      // Only when true, this function will return the data in the promise as well!
+      singleEvent: true,
+      orderBy: {
+        type: firebase.QueryOrderByType.CHILD,
+        value: "postKey" // mandatory when type is 'child'
+      },
+      range:
+        {
+          type: firebase.QueryRangeType.EQUAL_TO,
+          value: this.data.cardKey
+        },
+      limit: {
+        type: firebase.QueryLimitType.LAST,
+        value: 1
+      }
+    }).then((result) => {
+      if(Object.keys(result.value).length == 0){
+        firebase.query(onQueryEvent, "/user_detail/"+ key +"/likedPosts", {
+          // set this to true if you want to check if the value exists or just want the event to fire once
+          // default false, so it listens continuously.
+          // Only when true, this function will return the data in the promise as well!
+          singleEvent: true,
+          orderBy: {
+            type: firebase.QueryOrderByType.CHILD,
+            value: "postKey" // mandatory when type is 'child'
+          },
+          range:
+            {
+              type: firebase.QueryRangeType.EQUAL_TO,
+              value: this.data.cardKey
+            },
+          limit: {
+            type: firebase.QueryLimitType.LAST,
+            value: 1
+          }
+        }).then((result)=>
+        {
+          Object.keys(result.value).forEach(delKey => {
+          firebase.remove("/user_detail/"+key+"/likedPosts/" + delKey);
+          })
+        }
+        )
+        firebase.push("/user_detail/"+ key +"/dislikedPosts",
+          {
+            'postKey': this.data.cardKey
+          }
+        )
+        var path;
+    path = "/posts/" + this.key + "/likes";
+    firebase.transaction(path, (currentValue => {
+      if (currentValue === null) {
+        return 0;
+      } else {
+        return --currentValue; // Increment the current value. Do not try to increment currentValue if its NaN!
+      }
+    }))
+     .then((result) => {
+       console.log("Succes");
+
+       firebase.getValue(path)
+      .then(result => {
+        var json;
+        console.log(JSON.stringify(result))
+        json = JSON.parse(JSON.stringify(result))
+        this.likes = json.value;
+      }
+        )
+      .catch(error => console.log("Error: " + error));
+
+
+      }).catch(err => console.log("Encountered an error " + err));
+      }
+    })
+          
+    
+  });
+  }).catch((error) => console.log(error));
+    
+    
+    
+  }
+
 
 }

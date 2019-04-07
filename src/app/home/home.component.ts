@@ -59,12 +59,51 @@ export class HomeComponent implements OnInit {
           {
             
             type: firebase.LoginType.GOOGLE, //the type of login by the plugin
-            
-            
+            googleOptions: {
+              hostedDomain: "upr.edu"
+            }
           }).then(
             (user) => {
+              var onQueryEvent = result => {
+                // note that the query returns 1 match at a time
+                // in the order specified in the query
+                if (!result.error) {
+                }
+              }
+                firebase.query(onQueryEvent, "/user_detail", {
+                  // set this to true if you want to check if the value exists or just want the event to fire once
+                  // default false, so it listens continuously.
+                  // Only when true, this function will return the data in the promise as well!
+                  singleEvent: true,
+                  orderBy: {
+                    type: firebase.QueryOrderByType.CHILD,
+                    value: "email" // mandatory when type is 'child'
+                  },
+                  range:
+                    {
+                      type: firebase.QueryRangeType.EQUAL_TO,
+                      value: user.email
+                    },
+                  limit: {
+                    type: firebase.QueryLimitType.LAST,
+                    value: 1
+                  }
+                }).then( (result) => {
+                  //console.log(result)
+                    if (Object.keys(result.value).length != 0){
+                       
+                    }else{
+                      firebase.push(
+                        '/user_detail/',  
+                        {
+                          email: user.email
+                        }
+                    );
+                    }
+                });
               
               
+              this.data.email = user.email;
               this.router.navigate(['homepage']); //after the function starts navigates to the homepage
               this.data.changeUsername(user.name)
               //loader.hide();

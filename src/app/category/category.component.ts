@@ -29,9 +29,11 @@ export class CategoryComponent implements OnInit {
 
   category; //Used for the name of the category selected
   categoryPost; //Used to get the Json locally
+  post;
 
   public drawer: RadSideDrawer;
   public categoryJson;
+  public jsons = [];
 
   @ViewChild('stack') stack : ElementRef; //Locates local stack in xml
   
@@ -106,78 +108,15 @@ public cardTap(key){
         type: firebase.QueryLimitType.LAST,
         value: 5
       }
-    }).then( () => {
+    }).then( (result) => {
       console.log(this.categoryJson.value)
       if(this.categoryJson.value){
-
-      Object.keys(this.categoryJson.value).forEach(key => { //iterate on each value attribute
-        
-
-        const card = new CardView();//create card and labels
-        const lblbody = new Label();
-        const lblTitle = new Label();
-        const lblCat = new Label();
-
-        lblCat.horizontalAlignment = "right";
-
-        let pageCSS = ".title { font-size: 30; font-weight: bold;} .body{ font-size: 20;} .background { background-color: white;}"; //CSS for page
-        this.page.css = pageCSS;
-
-        lblCat.text = this.categoryJson.value[key].category; //value is json content, key acts as sub number 
-        lblCat.className = "category";
-        lblbody.text = this.categoryJson.value[key].body;
-        lblbody.className = "body";
-        lblbody.marginLeft = 20;
-        lblTitle.text = this.categoryJson.value[key].title;
-        lblTitle.className = "title";
-        lblbody.style.verticalAlignment = "middle";
-
-        card.className = "background";
-        card.elevation=10;
-        card.marginBottom = 5;
-        card.marginTop=5;
-        card.radius=5;
-        card.height = 200;
-        card.ripple = true;
-
-        card.notify({ eventName: "tap", object: card}); //Add tap event to every card
-        card.on("tap", (eventData) => {
-          this.cardTap(key);
-        })
-        
-        const inGrid = new GridLayout(); //Create grid layout
-
-
-        //EVERY CARD HAS A GRID LAYOUT INSIDE OF IT 
-
-        card.content = inGrid; //add the layout inside the card
-        inGrid.addChild(lblCat);//add labels to grid layout
-        inGrid.addChild(lblTitle);
-        inGrid.addChild(lblbody);
-
-        inGrid.addColumn(new ItemSpec(1, GridUnitType.STAR)); //Layout properties
-        inGrid.addColumn(new ItemSpec(1, GridUnitType.AUTO));
-        inGrid.addColumn(new ItemSpec(1, GridUnitType.AUTO));
-
-        inGrid.addRow(new ItemSpec(1, GridUnitType.AUTO));
-        inGrid.addRow(new ItemSpec(1, GridUnitType.AUTO));
-        inGrid.addRow(new ItemSpec(1, GridUnitType.AUTO));
-
-        GridLayout.setRow(lblCat, 0);//collums and rows of each grid element
-        GridLayout.setRow(lblTitle, 0);
-        GridLayout.setRow(lblbody, 1);
-
-        GridLayout.setColumn(lblCat, 1)
-        GridLayout.setColumn(lblTitle, 0);
-        GridLayout.setColumn(lblbody, 0);
-        
-        let stack = <StackLayout>this.stack.nativeElement;
-        stack.addChild(card);//add the card to the XML stackLayout
-        
-        
-        
-      });
-
+        (this.post = JSON.parse(JSON.stringify(result)))
+        Object.keys(this.post.value).forEach(key => { //iterate on each value attribute
+        this.post.value[key]['key']=key;
+        this.jsons.push(this.post.value[key]);
+        });
+      
     }else{
       console.log("No result");
     }

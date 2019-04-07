@@ -14,6 +14,7 @@ export class DataService {
   public cardKey; //Gets the JSON Key of a card
   public individualPostInfo; //Gets the JSON of said cardKey
   public comments;
+  public email;
   processing = false;
 
    options = { //Loader options across all the app
